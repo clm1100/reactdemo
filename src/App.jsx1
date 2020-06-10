@@ -1,0 +1,62 @@
+import React,{Component} from 'react';
+import './App.css';
+
+
+ function List(author){
+      if(author==='admin'){
+        return <div>管理员</div>
+      }else{
+        return <div>普通户</div>
+      }
+}
+
+
+function Header(author){
+  if(author==='admin'){
+    return <div>管理员</div>
+  }else{
+    return <div>普通户</div>
+  }
+}
+
+function getAuthor(){
+  return new Promise((resolve,rekect)=>{
+    setTimeout(()=>{
+      let author = ['admin','user'][Math.round(Math.random()-0.5)]
+        resolve(author)
+    },1000)
+  })
+}
+
+function AuthorHoc(Com){
+  return class extends Component{
+    constructor(props){
+      super(props);
+    }
+    state={author:''}
+   async componentDidMount(){
+      let author = await getAuthor();
+      this.setState({author})
+    }
+    render(){
+      return <div>
+        <h1>wrap</h1>
+        <Com author={this.state.author}></Com>
+      </div>
+    }
+  }
+}
+
+
+let Newlist = AuthorHoc(List)
+
+function App() {
+  return (
+    <div className="App">
+      
+      <Newlist/>
+        </div>
+  );
+}
+
+export default App;

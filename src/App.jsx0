@@ -1,0 +1,50 @@
+import React,{Component} from 'react';
+import './App.css';
+
+
+function getAuthor(){
+    return new Promise((resolve,rekect)=>{
+      setTimeout(()=>{
+        let author = ['admin','user'][0]
+          resolve(author)
+      },1000)
+    })
+  }
+
+class List extends Component{
+    
+    state = {author:''}
+    async componentDidMount(){
+        let author = await getAuthor();
+        this.setState({author})
+    }
+    render(){
+        const {author} = this.state
+        if(author==='admin'){
+            return <div>管理员</div>
+          }else{
+            return <div>普通户</div>
+          }
+    }
+}
+
+
+function Header(author){
+  if(author==='admin'){
+    return <div>管理员</div>
+  }else{
+    return <div>普通户</div>
+  }
+}
+
+
+
+function App() {
+  return (
+    <div className="App">
+        <List></List>
+    </div>
+  );
+}
+
+export default App;
